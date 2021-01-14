@@ -8,13 +8,13 @@ export (float) var friction = 0.5
 var motion : Vector2
 
 func apply_inputs():
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("polyplat.left"):
 		motion.x = -speed
 		
-	if Input.is_action_pressed("right"):
+	if Input.is_action_pressed("polyplat.right"):
 		motion.x = speed
 		
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("polyplat.jump"):
 		if is_on_floor():
 			motion.y = jump_force
 

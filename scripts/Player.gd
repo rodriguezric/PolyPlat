@@ -1,12 +1,18 @@
 extends KinematicBody2D
 
-
 export (int) var gravity = 500
 export (int) var speed = 150
 export (int) var jump_force = -175
 export (float) var friction = 0.5
-var motion : Vector2
 
+var fall_speed: int
+var motion: Vector2
+
+func _ready():
+    fall_speed = abs(jump_force)
+
+
+# Namespaced inputs specific to PolyPlat framework
 func apply_inputs():
 	if Input.is_action_pressed("polyplat.left"):
 		motion.x = -speed
@@ -20,21 +26,18 @@ func apply_inputs():
 
 
 func apply_friction():
-	if not Input.is_action_pressed("left") and not Input.is_action_pressed("right"):
-		motion.x = lerp(motion.x, 0, friction)
+    motion.x = lerp(motion.x, 0, friction)
 
 
 func apply_gravity(delta):
 	motion.y += gravity * delta
 	
 	if motion.y > 0:
-		motion.y = min(motion.y, abs(jump_force) * 1.5)
+		motion.y = min(motion.y, abs(jump_force))
 	
-	if is_on_floor():
-		motion.y = min(motion.y, 5)
 
 func _physics_process(delta):
 	apply_inputs()
 	apply_friction()
 	apply_gravity(delta)
-	motion.y = move_and_slide(motion, Vector2.UP).y
+    move_and_slide(motion, Vector2.UP)
